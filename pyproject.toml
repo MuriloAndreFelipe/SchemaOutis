@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schemaoracle"
+version = "0.1.0"
+description = "Paged reranking for schema matching"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "mmh3>=4.0",
+]
+
+[project.optional-dependencies]
+# Building a retrieval order. Not needed to analyse cached runs.
+retrieval = ["sentence-transformers>=2.2", "torch>=2.0", "duckdb>=0.10"]
+# The LLM clients. Ollama, OpenRouter and the decision backend use httpx.
+llm = ["anthropic>=0.40", "httpx>=0.24"]
+# The published baselines in evaluation/competitors.py.
+baselines = ["valentine>=1.0", "magneto-python>=0.2"]
+figures = ["matplotlib>=3.7", "jupyter"]
+dev = ["pytest>=7.4"]
+
+[tool.setuptools]
+packages = ["schemaoracle", "corpora", "evaluation"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+.venv/
+
+# Corpora and run caches: large, and reproducible from their sources.
+data/
+results/
+
+# Figures are build products of the notebooks.
+figures/
+
+notebooks/media/
+
+# Local only.
+.env
+CLAUDE.md
+.claude/
