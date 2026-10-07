@@ -8,7 +8,7 @@ A pair is a plain dict, so a hand-written dict in a test works as a corpus:
      "target_df": DataFrame,
      "ground_truth": [(source_column, target_column), ...]}
 
-`schemaoracle` does not import this package.
+`schemaoutis` does not import this package.
 """
 
 from .registry import CORPORA, load, load_one, resolve_root

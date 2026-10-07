@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "schemaoracle"
+name = "schemaoutis"
 version = "0.1.0"
 description = "Paged reranking for schema matching"
 requires-python = ">=3.10"
@@ -24,7 +24,7 @@ figures = ["matplotlib>=3.7", "jupyter"]
 dev = ["pytest>=7.4"]
 
 [tool.setuptools]
-packages = ["schemaoracle", "corpora", "evaluation"]
+packages = ["schemaoutis", "corpora", "evaluation"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

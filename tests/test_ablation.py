@@ -345,7 +345,7 @@ def test_a_longer_profile_gets_a_smaller_batch():
     `batch x longest`. Holding the batch fixed while `n_samples` grows is what
     turns a working sweep into an out-of-memory error partway through.
     """
-    from schemaoracle.retrieval import plan_batch_size
+    from schemaoutis.retrieval import plan_batch_size
 
     short = plan_batch_size(["x" * 300])
     long = plan_batch_size(["x" * 2100])
@@ -353,7 +353,7 @@ def test_a_longer_profile_gets_a_smaller_batch():
 
 
 def test_the_planned_batch_never_exceeds_the_ceiling_or_drops_below_one():
-    from schemaoracle.retrieval import plan_batch_size
+    from schemaoutis.retrieval import plan_batch_size
 
     assert plan_batch_size(["x" * 10], batch_size=64) == 64
     assert plan_batch_size(["x" * 5_000_000], batch_size=64) == 1
@@ -362,7 +362,7 @@ def test_the_planned_batch_never_exceeds_the_ceiling_or_drops_below_one():
 
 def test_the_batch_is_sized_by_the_longest_not_the_average():
     """One 2,000-character profile among short ones still sets the cost."""
-    from schemaoracle.retrieval import plan_batch_size
+    from schemaoutis.retrieval import plan_batch_size
 
     mixed = ["x" * 20] * 99 + ["x" * 2100]
     assert plan_batch_size(mixed) == plan_batch_size(["x" * 2100])
@@ -370,7 +370,7 @@ def test_the_batch_is_sized_by_the_longest_not_the_average():
 
 def test_a_short_max_sequence_length_caps_the_estimate():
     """A model that truncates at 128 tokens cannot be charged for 8,000."""
-    from schemaoracle.retrieval import plan_batch_size
+    from schemaoutis.retrieval import plan_batch_size
 
     assert plan_batch_size(["x" * 8000], max_seq_length=128) > \
         plan_batch_size(["x" * 8000], max_seq_length=8192)
@@ -384,7 +384,7 @@ def test_an_out_of_memory_error_halves_the_batch_and_retries(monkeypatch):
     import numpy as np
     import torch
 
-    from schemaoracle import retrieval
+    from schemaoutis import retrieval
 
     tried = []
 
@@ -409,7 +409,7 @@ def test_an_out_of_memory_error_at_batch_one_is_raised(monkeypatch):
     """Nothing left to halve: the card genuinely cannot hold the model."""
     import torch
 
-    from schemaoracle import retrieval
+    from schemaoutis import retrieval
 
     class Model:
         max_seq_length = 512

@@ -16,7 +16,7 @@ from typing import Iterator, Sequence
 import pandas as pd
 
 # Overridable so a notebook can point at a copy elsewhere.
-DATA_ROOT_ENV = "SCHEMAORACLE_DATA"
+DATA_ROOT_ENV = "SCHEMAOUTIS_DATA"
 DEFAULT_DATA_ROOT = Path(__file__).resolve().parent.parent / "data"
 
 

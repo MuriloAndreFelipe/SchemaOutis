@@ -11,10 +11,10 @@ import pandas as pd
 import pytest
 
 from conftest import ScriptedClient, score_first
-from schemaoracle import cache, inventory, pruning
-from schemaoracle import run
-from schemaoracle.run import run_pair
-from schemaoracle.resume import errored_columns
+from schemaoutis import cache, inventory, pruning
+from schemaoutis import run
+from schemaoutis.run import run_pair
+from schemaoutis.resume import errored_columns
 
 CORPUS, RETRIEVER, ARM = "gdc", "qwen", "claude-sonnet-5__block_cached"
 
@@ -136,7 +136,7 @@ def test_a_run_is_written_once_and_served_from_disk_after(
 
 
 def test_the_worst_case_matches_what_the_arm_can_actually_spend():
-    from schemaoracle.run import worst_case_calls
+    from schemaoutis.run import worst_case_calls
 
     assert worst_case_calls("retrieval", 39, 736, 20) == 0
     assert worst_case_calls("rerank", 39, 736, 20) == 39
@@ -337,7 +337,7 @@ def test_a_run_stops_instead_of_repeating_one_unrecoverable_error(
     error records across 30 files and one very long wait, when five would have
     said the same thing.
     """
-    from schemaoracle.paging import RunAborted
+    from schemaoutis.paging import RunAborted
 
     wide = {f"c{i}": rankings["age"] for i in range(30)}
     source = pd.DataFrame({c: [1] for c in wide})
@@ -354,7 +354,7 @@ def test_nothing_is_written_when_no_column_ever_answered(
         pair, rankings, target_text, tmp_path):
     """A file of nothing but errors is one the next attempt has to be told to
     ignore. There is nothing in it to resume from."""
-    from schemaoracle.paging import RunAborted
+    from schemaoutis.paging import RunAborted
 
     wide = {f"c{i}": rankings["age"] for i in range(30)}
     source = pd.DataFrame({c: [1] for c in wide})
@@ -373,7 +373,7 @@ def test_the_columns_that_answered_before_the_failure_are_kept(
     Those cost money. Keeping them means the fix plus resume=True finishes the
     pair instead of starting it again.
     """
-    from schemaoracle.paging import RunAborted
+    from schemaoutis.paging import RunAborted
 
     ok = score_first(0.6)
     calls = {"n": 0}
@@ -404,7 +404,7 @@ def test_a_healthy_run_is_not_stopped_by_scattered_failures(
         pair, rankings, target_text, tmp_path):
     """Five in a row, not five in total. A couple of flaky requests are not a
     dead key."""
-    from schemaoracle.resume import errored_columns as errs
+    from schemaoutis.resume import errored_columns as errs
 
     n = {"i": 0}
     ok = score_first(0.6)
@@ -496,7 +496,7 @@ def test_an_aborted_resume_keeps_the_columns_it_did_reach(
     rest. Splicing the full request raised KeyError on the difference and threw
     away every call the resume had already paid for.
     """
-    from schemaoracle.paging import RunAborted
+    from schemaoutis.paging import RunAborted
 
     wide = {f"c{i}": rankings["age"] for i in range(30)}
     source = pd.DataFrame({c: [1] for c in wide})
@@ -585,7 +585,7 @@ def test_an_unreadable_reply_is_not_retried_for_ever(
 
 def test_an_api_error_is_still_retried(pair, rankings, target_text, tmp_path):
     """The other half of the distinction: that column was never asked."""
-    from schemaoracle.resume import retryable_columns
+    from schemaoutis.resume import retryable_columns
 
     def boom(prompt):
         raise RuntimeError("api is down")
@@ -611,7 +611,7 @@ def test_a_payload_of_unreadable_replies_is_still_readable(
     Refusing it would mean a model that formats badly can never be reported at
     all, and how often it does that is a result about the model.
     """
-    from schemaoracle.resume import unparseable_columns
+    from schemaoutis.resume import unparseable_columns
 
     # The paged arm, because `rerank` falls back to the retriever's order for
     # any column it could not read, the way Magneto does, so an unparseable
@@ -631,7 +631,7 @@ def test_a_payload_of_unreadable_replies_is_still_readable(
 
 def test_a_resume_reprices_the_payload_it_spliced():
     """A splice recomputes totals and completeness from the new columns."""
-    from schemaoracle.resume import merge_resumed
+    from schemaoutis.resume import merge_resumed
 
     def col(name, stop, n_blocks, tin):
         return {"source_column": name, "stop_reason": stop,
@@ -665,7 +665,7 @@ def test_a_gateway_run_resumes_on_the_vendors_own_api():
     (`anthropic/claude-sonnet-5`) and the direct one does not, which refused
     every such resume until `canonical_of` stripped it.
     """
-    from schemaoracle.resume import canonical_of, check_compatible
+    from schemaoutis.resume import canonical_of, check_compatible
 
     def payload(model):
         return {"trace": {"metadata": {"config": {"model": model, "window": 20}},
@@ -687,7 +687,7 @@ def test_a_retired_setting_is_not_part_of_the_identity():
     direction. `prompt_style` is on 12,428 payloads and `decisions` on 13,441,
     and the code emits neither, so comparing one would refuse every one of them.
     """
-    from schemaoracle.resume import IDENTITY_FIELDS, check_compatible, identity
+    from schemaoutis.resume import IDENTITY_FIELDS, check_compatible, identity
 
     assert "prompt_style" not in IDENTITY_FIELDS
     assert "decisions" not in IDENTITY_FIELDS
@@ -711,7 +711,7 @@ def test_a_payload_recording_a_retired_setting_still_resumes():
     recorded value meeting `None` must not read as drift, or every resume of
     every existing run refuses after sending its calls.
     """
-    from schemaoracle.resume import check_compatible
+    from schemaoutis.resume import check_compatible
 
     def payload(cfg):
         return {"trace": {"metadata": {"config": cfg}, "columns": []}}
@@ -729,7 +729,7 @@ def test_turning_retries_on_resumes_an_existing_run_rather_than_refusing_it():
     same measurement for every column that parsed, so asking for retries must
     splice into it, not demand a separate file.
     """
-    from schemaoracle.resume import check_compatible
+    from schemaoutis.resume import check_compatible
 
     def payload(n):
         return {"trace": {"metadata": {"config": {
@@ -833,7 +833,7 @@ PRUNES = [None] + [c for n in range(1, len(pruning.POLICIES) + 1)
 @pytest.mark.parametrize("kind", ["rerank", "gated", "paged"])
 @pytest.mark.parametrize("prune", PRUNES)
 def test_a_prune_round_trips_through_the_filename(kind, prune):
-    from schemaoracle.pruning import tag
+    from schemaoutis.pruning import tag
 
     path = cache.run_path("r", CORPUS, "Cao", RETRIEVER, kind, arm=ARM,
                           window=20, threshold=0.25, top_k=20, prune=prune)
@@ -1007,7 +1007,7 @@ def test_the_models_reply_is_kept_on_every_block(tmp_path, monkeypatch):
     Without the raw reply a parser bug can only be repaired by asking every
     affected column again. Two have happened; both cost a full rerun.
     """
-    from schemaoracle.bench import Bench
+    from schemaoutis.bench import Bench
     from test_bench import QWEN
 
     ranking = [(f"t_{i}", 1.0 - i / 100) for i in range(40)]

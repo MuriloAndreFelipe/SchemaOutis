@@ -9,7 +9,7 @@ import os
 
 import pytest
 
-from schemaoracle.llm import (
+from schemaoutis.llm import (
     OLLAMA_API_KEY_ENV,
     OLLAMA_CLOUD_BASE_URL,
     OLLAMA_DEFAULT_BASE_URL,

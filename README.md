@@ -1,4 +1,4 @@
-# SchemaOracle
+# SchemaOutis
 
 Code for a study of paged reranking in schema matching.
 
@@ -57,9 +57,9 @@ would weight Clark's 16 columns like Dou's 179.
 ## Use
 
 ```python
-from schemaoracle import SchemaOracle
+from schemaoutis import SchemaOutis
 
-oracle = SchemaOracle(arm="paged", client=client, llm_model="claude-sonnet-5")
+oracle = SchemaOutis(arm="paged", client=client, llm_model="claude-sonnet-5")
 matches = oracle.get_matches(source_df, target_df)   # Valentine format
 
 oracle.trace.completeness()   # is every column answered?
@@ -73,7 +73,7 @@ Valentine harness can drive either.
 Two threshold-free filters reduce the work:
 
 ```python
-oracle = SchemaOracle(arm="gated", prune=("mutual", "zero"), client=client,
+oracle = SchemaOutis(arm="gated", prune=("mutual", "zero"), client=client,
                       llm_model="claude-sonnet-5")
 ```
 
@@ -83,11 +83,11 @@ to than its own neighbourhood is. `oracle.prune_plan` records what was dropped.
 
 ## Layout
 
-`schemaoracle` produces runs and `evaluation` scores them; `schemaoracle`
+`schemaoutis` produces runs and `evaluation` scores them; `schemaoutis`
 imports neither `evaluation` nor `corpora` (`tests/test_layout.py`).
 
 ```
-schemaoracle/     the matcher and the runs it writes
+schemaoutis/     the matcher and the runs it writes
   matcher.py      the four arms, and get_matches
   paging.py       the traversal: windows, accept or decline, when to stop
   prompts.py      templates and reply parsing
@@ -143,7 +143,7 @@ data/gdc/{target-tables,source-tables,ground-truth}/
 data/Valentine-datasets/<subset>/.../<pair>_{source,target}.csv + _mapping.json
 ```
 
-`corpora.load("gdc")` reads `data/`; set `SCHEMAORACLE_DATA` to use another
+`corpora.load("gdc")` reads `data/`; set `SCHEMAOUTIS_DATA` to use another
 location. Runs are cached under `results/`. Both directories are gitignored.
 
 ## Run files

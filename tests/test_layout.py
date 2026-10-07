@@ -1,5 +1,5 @@
 """
-`schemaoracle` imports neither `corpora` nor `evaluation`. Checked in a
+`schemaoutis` imports neither `corpora` nor `evaluation`. Checked in a
 subprocess, since pytest has already imported both.
 """
 
@@ -10,14 +10,14 @@ import sys
 
 CHILD = """
 import sys
-import schemaoracle
-from schemaoracle import bench, cache, inventory, run
+import schemaoutis
+from schemaoutis import bench, cache, inventory, run
 leaked = sorted(m for m in ("corpora", "evaluation") if m in sys.modules)
 print(",".join(leaked))
 """
 
 
-def _imported_by_schemaoracle() -> list[str]:
+def _imported_by_schemaoutis() -> list[str]:
     """Modules present after importing the library, in a clean interpreter."""
     out = subprocess.run([sys.executable, "-c", CHILD], capture_output=True,
                          text=True)
@@ -31,7 +31,7 @@ def test_the_library_imports_neither_the_corpora_nor_the_metrics():
     imported both packages by the time any test runs, so an in-process check
     would pass no matter what the library does.
     """
-    assert _imported_by_schemaoracle() == []
+    assert _imported_by_schemaoutis() == []
 
 
 def test_the_metrics_may_import_the_library():
@@ -39,7 +39,7 @@ def test_the_metrics_may_import_the_library():
     out = subprocess.run(
         [sys.executable, "-c",
          "import sys; from evaluation import scoring, ablation; "
-         "print('schemaoracle' in sys.modules)"],
+         "print('schemaoutis' in sys.modules)"],
         capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
     assert out.stdout.strip() == "True"

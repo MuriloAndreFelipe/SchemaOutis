@@ -1,8 +1,8 @@
 """
 Scoring runs, and the retrieval sweep that feeds them.
 
-Separate from `schemaoracle`, which produces rankings and traces; this package
-judges them. It imports `schemaoracle`, never the reverse.
+Separate from `schemaoutis`, which produces rankings and traces; this package
+judges them. It imports `schemaoutis`, never the reverse.
 
   matching       recall@k, MRR, and precision/recall with declining as silence
   blocking       the paged arm as a blocking scheme (Pair Completeness,

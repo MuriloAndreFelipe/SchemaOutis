@@ -8,8 +8,8 @@ import pandas as pd
 import pytest
 
 from conftest import ScriptedClient, score_first
-from schemaoracle import cache, inventory
-from schemaoracle.bench import Bench
+from schemaoutis import cache, inventory
+from schemaoutis.bench import Bench
 
 CORPUS = "gdc"
 
@@ -114,7 +114,7 @@ def test_one_client_per_set_of_options_not_per_provider(pairs, tmp_path):
         built.append((provider, tuple(sorted(opts.items()))))
         return object()
 
-    import schemaoracle.bench as mod
+    import schemaoutis.bench as mod
     original, mod.build_client = mod.build_client, fake_build
     try:
         first = b.client(b.models[0])
@@ -278,7 +278,7 @@ def test_cost_prices_a_run_that_is_present_but_short(bench, pairs, tmp_path):
     """
     import json
 
-    from schemaoracle import cache, inventory
+    from schemaoutis import cache, inventory
 
     bench.dry_run = False
     bench.run("rerank")
@@ -480,7 +480,7 @@ def test_the_sweep_frame_keeps_a_run_the_scorer_would_drop(bench, tmp_path):
     to send and must see the run; `inventory.check`'s default is for whoever
     plots and must not.
     """
-    from schemaoracle import inventory
+    from schemaoutis import inventory
 
     bench.dry_run = False
     bench.run("rerank")
@@ -539,7 +539,7 @@ def _col(name, stop="accepted"):
 
 
 def test_a_cached_run_made_with_other_client_options_is_not_served():
-    from schemaoracle.resume import ConfigMismatch, check_cached
+    from schemaoutis.resume import ConfigMismatch, check_cached
 
     on_disk = _payload([], config={"prompt_style": "figure5",
                                    "on_unparseable": "stop",
@@ -564,7 +564,7 @@ def test_a_cached_run_recording_a_retired_field_is_still_served():
     drift, so retiring one without dropping it from `UNKEYED_FIELDS` refuses
     all 12,428 of them.
     """
-    from schemaoracle.resume import check_cached
+    from schemaoutis.resume import check_cached
 
     on_disk = _payload([], config={"prompt_style": "figure5",
                                    "on_unparseable": "stop",
@@ -573,7 +573,7 @@ def test_a_cached_run_recording_a_retired_field_is_still_served():
 
 
 def test_a_run_that_recorded_no_client_options_still_resolves():
-    from schemaoracle.resume import check_cached
+    from schemaoutis.resume import check_cached
 
     # Written before the field existed. Unknown is not the same as different,
     # and treating it as different would reject every older run on disk.
@@ -603,7 +603,7 @@ def test_an_unreadable_column_is_asked_again_only_when_retries_are_on():
     changes nothing; a retry spells the answer format out and can. The re-ask
     lands in the run's own file, which is why no seeding step is needed.
     """
-    from schemaoracle.run import _to_redo
+    from schemaoutis.run import _to_redo
 
     payload = _payload([_col("a"), _col("b", "unparseable"),
                         _col("c", "error")])

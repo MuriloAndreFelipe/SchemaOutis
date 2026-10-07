@@ -998,7 +998,7 @@ def build_client(
         names = ", ".join(API_KEY_ENV["anthropic"])
         raise ValueError(
             f"no Anthropic API key. Set {names}, call "
-            "`schemaoracle.llm.load_env()` if it is in a .env file, or pass "
+            "`schemaoutis.llm.load_env()` if it is in a .env file, or pass "
             "api_key=."
         )
 

@@ -14,7 +14,7 @@ import pytest
 
 from evaluation import scoring as report
 from evaluation import competitors
-from schemaoracle import cache, inventory
+from schemaoutis import cache, inventory
 
 
 class ColumnPair(NamedTuple):

@@ -24,13 +24,13 @@ from typing import Any, Iterable, Sequence
 import pandas as pd
 
 from .matching import gold_by_source
-from schemaoracle.serializers import (
+from schemaoutis.serializers import (
     ENCODING_MODES,
     SAMPLING_MODES,
     build_column_profiles,
 )
 
-from schemaoracle import cache
+from schemaoutis import cache
 
 # What identifies one point of the grid.
 CONFIG_FIELDS = ("embedding_model", "encoding_mode", "sampling_mode",
@@ -143,7 +143,7 @@ def build_config(
 ) -> dict[str, Any]:
     """Embed every pair under `cfg` and return the complete orderings."""
     # Imported here so reading a finished ablation needs no torch.
-    from schemaoracle.retrieval import BiEncoderIndex
+    from schemaoutis.retrieval import BiEncoderIndex
 
     started = time.perf_counter()
     out: dict[str, Any] = {}
@@ -397,7 +397,7 @@ def sweep(
 
     for i, cfg in enumerate(configs, start=1):
         if free_between_models and current_model not in (None, cfg["embedding_model"]):
-            from schemaoracle.retrieval import free_embedder
+            from schemaoutis.retrieval import free_embedder
             free_embedder()
             shared.clear()          # digests are memoised per model
         current_model = cfg["embedding_model"]

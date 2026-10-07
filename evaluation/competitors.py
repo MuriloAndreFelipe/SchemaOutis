@@ -19,7 +19,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
 
-from schemaoracle.cache import fs_safe
+from schemaoutis.cache import fs_safe
 
 
 def _valentine(name: str, **kw) -> Callable:
@@ -104,7 +104,7 @@ def _magneto_shortlist(pair: dict, *, runs: Path, corpus: str, retriever: str,
     """
     from magneto import Magneto
 
-    from schemaoracle import cache
+    from schemaoutis import cache
 
     path = cache.retrieval_path(runs, corpus, pair["name"], retriever)
     if not path.exists():
@@ -261,7 +261,7 @@ def run_magneto_llm(pair: dict, *, results: Path, corpus: str, runs: Path,
     from magneto.utils.dataframe_table import DataframeTable
     from magneto.utils.utils import get_samples
 
-    from schemaoracle.llm import load_env
+    from schemaoutis.llm import load_env
 
     load_env()
     matcher = magneto_llm_tag(retriever, llm, bp=bp)
@@ -353,7 +353,7 @@ def magneto_llm_plan(pairs: Sequence[dict], *, results: Path, corpus: str,
                      runs: Path, retrievers: Sequence[str],
                      llms: Sequence[str], bp: bool = True) -> list[dict]:
     """One row per (retriever, llm, pair): columns done and left, and tokens spent."""
-    from schemaoracle import cache
+    from schemaoutis import cache
 
     rows = []
     for retriever in retrievers:

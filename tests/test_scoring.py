@@ -12,8 +12,8 @@ import pytest
 
 from conftest import ScriptedClient, score_first
 from evaluation import scoring as report
-from schemaoracle import cache, inventory
-from schemaoracle.run import run_pair
+from schemaoutis import cache, inventory
+from schemaoutis.run import run_pair
 
 CORPUS, RETRIEVER, ARM = "gdc", "qwen", "anthropic__claude-sonnet-5"
 

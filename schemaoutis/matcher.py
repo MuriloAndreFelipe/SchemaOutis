@@ -174,12 +174,12 @@ def fall_back_to_retrieval(trace: RunTrace, rankings, top_k: int) -> int:
     return n
 
 
-class SchemaOracle:
+class SchemaOutis:
     """
     Match two DataFrames' columns with one of the arms. Usage mirrors
     magneto.Magneto:
 
-        oracle = SchemaOracle(arm="paged", window=20)
+        oracle = SchemaOutis(arm="paged", window=20)
         matches = oracle.get_matches(source_df, target_df)   # Valentine format
 
     Afterwards `rankings` holds the answers, `retrieval_order` the complete

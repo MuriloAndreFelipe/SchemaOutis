@@ -9,13 +9,13 @@ import pandas as pd
 import pytest
 
 from conftest import ScriptedClient, accept_at, score_first
-from schemaoracle import ARMS, run_arm
-from schemaoracle.matcher import (
-    SchemaOracle,
+from schemaoutis import ARMS, run_arm
+from schemaoutis.matcher import (
+    SchemaOutis,
     convert_to_valentine_format,
     get_top_k_matches,
 )
-from schemaoracle.trace import (
+from schemaoutis.trace import (
     STOP_ACCEPTED,
     STOP_DECLINED,
     STOP_ERROR,
@@ -170,15 +170,15 @@ def test_top_k_matches_breaks_ties_by_name_so_runs_are_reproducible():
     assert get_top_k_matches(tied, 3) == [("c", 0.9), ("a", 0.5), ("b", 0.5)]
 
 
-def test_schemaoracle_rejects_an_unknown_parameter():
+def test_schemaoutis_rejects_an_unknown_parameter():
     """A silently-ignored kwarg is a run configured differently than you think."""
     with pytest.raises(TypeError, match="unknown parameter"):
-        SchemaOracle(windwo=20)
+        SchemaOutis(windwo=20)
 
 
-def test_schemaoracle_rejects_an_unknown_arm():
+def test_schemaoutis_rejects_an_unknown_arm():
     with pytest.raises(ValueError, match="unknown arm"):
-        SchemaOracle(arm="magic")
+        SchemaOutis(arm="magic")
 
 
 # The middle arm: one block, and permission to refuse it
@@ -270,11 +270,11 @@ def frames(oracle_order):
 
 @pytest.fixture
 def oracle(monkeypatch, oracle_order):
-    """SchemaOracle with the retriever stubbed out."""
-    monkeypatch.setattr(SchemaOracle, "get_retrieval_order",
+    """SchemaOutis with the retriever stubbed out."""
+    monkeypatch.setattr(SchemaOutis, "get_retrieval_order",
                         lambda self, s, t: {k: list(v)
                                             for k, v in oracle_order.items()})
-    return SchemaOracle
+    return SchemaOutis
 
 
 @pytest.mark.parametrize("arm", ARMS)
@@ -351,7 +351,7 @@ def test_a_target_prune_removes_the_candidate_from_the_block(
     The target side is the half that changes what the model is *asked*, so the
     proof has to be the prompt itself and not the trace.
     """
-    from schemaoracle import pruning
+    from schemaoutis import pruning
 
     # `t_1` and `t_2` are weakly similar and specifically close to nothing,
     # which is what a non-positive locally scaled score means.
@@ -369,7 +369,7 @@ def test_a_target_prune_removes_the_candidate_from_the_block(
 
 def test_a_target_prune_shortens_the_walk(target_text, source, ranking):
     """Fewer candidates is fewer windows, so paged pays for fewer calls."""
-    from schemaoracle import pruning
+    from schemaoutis import pruning
 
     order = {"age": list(ranking)}
     full = run_arm("paged", source, order, target_text,

@@ -9,8 +9,8 @@ import pandas as pd
 import pytest
 
 from conftest import ScriptedClient, accept_at, score_first
-from schemaoracle import Pager, block_spans, run_paging
-from schemaoracle.trace import (
+from schemaoutis import Pager, block_spans, run_paging
+from schemaoutis.trace import (
     STOP_ACCEPTED,
     STOP_CAPPED,
     STOP_ERROR,
@@ -221,7 +221,7 @@ def test_a_turn_spent_in_the_thinking_channel_is_not_retried(
 
 
 def test_the_retry_count_cannot_exceed_the_ceiling():
-    from schemaoracle.paging import MAX_PARSE_RETRIES
+    from schemaoutis.paging import MAX_PARSE_RETRIES
 
     assert MAX_PARSE_RETRIES == 3
     with pytest.raises(ValueError, match="max_parse_retries"):
@@ -236,7 +236,7 @@ def test_a_retry_setting_is_recorded_but_is_not_the_run_identity():
     must not block a resume: refusing that is what forced runs to be split
     across two filenames and copied between them.
     """
-    from schemaoracle.resume import IDENTITY_FIELDS
+    from schemaoutis.resume import IDENTITY_FIELDS
 
     assert "max_parse_retries" not in IDENTITY_FIELDS
     assert "max_parse_retries" in pager(lambda _: "x").config()
@@ -358,8 +358,8 @@ def test_the_trace_records_a_parameter_the_backend_refused(
     refused should not record one, or the trace claims a setting that never
     reached the model.
     """
-    from schemaoracle.llm import DropsRejectedParams
-    from schemaoracle.paging import Pager, run_paging
+    from schemaoutis.llm import DropsRejectedParams
+    from schemaoutis.paging import Pager, run_paging
 
     class Rejecting:
         """Refuses temperature the first time, like a newer checkpoint."""

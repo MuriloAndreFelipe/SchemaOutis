@@ -13,7 +13,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-from schemaoracle import inventory
+from schemaoutis import inventory
 
 from . import scoring as report
 

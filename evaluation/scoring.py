@@ -23,7 +23,7 @@ from .matching import (mrr, mrr_abstain, precision_recall,
                        recall_at_ground_truth, recall_at_ground_truth_bounds,
                        recall_at_k, top1_accuracy)
 
-from schemaoracle import cache, inventory
+from schemaoutis import cache, inventory
 
 # 1 is the headline, 20 the block size and rerank's ceiling, 10 in between.
 DEFAULT_KS = (1, 10, 20)

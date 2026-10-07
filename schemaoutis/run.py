@@ -182,7 +182,7 @@ def run_pair(
                           arm=arm, window=window, threshold=threshold,
                           top_k=top_k, rep=rep, prune=prune)
 
-    # Applied as `SchemaOracle.get_matches` applies it.
+    # Applied as `SchemaOutis.get_matches` applies it.
     plan = pruning.plan(rankings, prune)
     rankings = plan.apply(rankings)
 

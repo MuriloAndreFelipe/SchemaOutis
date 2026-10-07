@@ -9,8 +9,8 @@ from itertools import combinations
 import numpy as np
 import pytest
 
-from schemaoracle import pruning
-from schemaoracle.pruning import (csls, masks as shipped_masks,
+from schemaoutis import pruning
+from schemaoutis.pruning import (csls, masks as shipped_masks,
                                   score_matrix)
 from evaluation.matching import (recall_at_ground_truth,
                                  recall_at_ground_truth_bounds)

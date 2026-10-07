@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from schemaoracle import prompts
-from schemaoracle.prompts import (
+from schemaoutis import prompts
+from schemaoutis.prompts import (
     MAGNETO_PROMPT,
     PROMPT_LAYOUTS,
     TEMPLATES,
@@ -93,7 +93,7 @@ def test_only_the_gated_layout_offers_a_final_none():
 
 
 def test_a_name_holding_parentheses_keeps_its_score():
-    from schemaoracle.prompts import _norm, parse_scores
+    from schemaoutis.prompts import _norm, parse_scores
 
     valid = {_norm(n): n for n in
              ["miller2_Biodiversity(marker)", "SectorID", "Amount (USD)"]}
@@ -106,7 +106,7 @@ def test_a_name_holding_parentheses_keeps_its_score():
 
 
 def test_plain_replies_parse_as_before():
-    from schemaoracle.prompts import parse_scores
+    from schemaoutis.prompts import parse_scores
 
     valid = {"workerid": "WorkerID", "empcode": "EmpCode"}
     pairs, _ = parse_scores("WorkerID(0.95); EmpCode(0.30)", valid)
@@ -116,7 +116,7 @@ def test_plain_replies_parse_as_before():
 
 
 def test_a_name_echoed_with_its_type_and_values_counts():
-    from schemaoracle.prompts import parse_response
+    from schemaoutis.prompts import parse_response
 
     texts = {"alcohol_drinks_per_day": "alcohol drinks per day unknown ",
              "alcohol_frequency":
@@ -137,7 +137,7 @@ def test_a_name_echoed_with_its_type_and_values_counts():
 
 
 def test_a_name_answered_as_the_prompt_showed_it_counts():
-    from schemaoracle.prompts import _norm, parse_response
+    from schemaoutis.prompts import _norm, parse_response
 
     names = ["miller2_Biodiversity(marker)", "miller2_ICTAsAToolForDevelopment(marker)",
              "miller2_SectorID"]
@@ -157,7 +157,7 @@ def test_a_reply_that_drops_the_shared_table_prefix_still_matches():
     one does not, so a bare `percent` against several `...Percent` targets is
     left unmatched rather than guessed.
     """
-    from schemaoracle.prompts import _norm, parse_response
+    from schemaoutis.prompts import _norm, parse_response
 
     names = ["miller2_CountryRegionPercent", "miller2_SectorPercent",
              "miller2_AmountSpent"]

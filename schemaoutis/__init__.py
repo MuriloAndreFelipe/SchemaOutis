@@ -1,5 +1,5 @@
 """
-SchemaOracle: four ways to answer one schema-matching question.
+SchemaOutis: four ways to answer one schema-matching question.
 
 Every arm reads the same retrieval order and differs only in how much of it the
 model may see and whether it may decline.
@@ -9,8 +9,8 @@ model may see and whether it may decline.
     gated       the same block, with a final NONE
     paged       one call per window, walking the whole order
 
-    from schemaoracle import SchemaOracle
-    matches = SchemaOracle(arm="paged", client=client).get_matches(src, tgt)
+    from schemaoutis import SchemaOutis
+    matches = SchemaOutis(arm="paged", client=client).get_matches(src, tgt)
 
 `get_matches` returns Valentine format, as `magneto.Magneto` does.
 
@@ -25,7 +25,7 @@ model may see and whether it may decline.
     cache, run, bench, inventory
                  running pairs, caching them, and reading them back
 
-`schemaoracle` imports neither `corpora` nor `evaluation`
+`schemaoutis` imports neither `corpora` nor `evaluation`
 (`tests/test_layout.py`).
 """
 
@@ -34,7 +34,7 @@ __version__ = "0.2.0"
 from .matcher import (
     ARM_SETTINGS,
     ARMS,
-    SchemaOracle,
+    SchemaOutis,
     convert_to_valentine_format,
     get_top_k_matches,
     run_arm,
@@ -44,7 +44,7 @@ from .paging import DEFAULT_WINDOW, Pager, block_spans, run_paging
 from .trace import BlockRecord, ColumnRecord, RunTrace
 
 __all__ = [
-    "SchemaOracle", "ARMS", "ARM_SETTINGS", "run_arm", "run_retrieval",
+    "SchemaOutis", "ARMS", "ARM_SETTINGS", "run_arm", "run_retrieval",
     "convert_to_valentine_format", "get_top_k_matches",
     "Pager", "run_paging", "block_spans", "DEFAULT_WINDOW",
     "RunTrace", "ColumnRecord", "BlockRecord",

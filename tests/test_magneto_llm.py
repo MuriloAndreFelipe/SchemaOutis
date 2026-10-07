@@ -13,7 +13,7 @@ pytest.importorskip("magneto")
 import magneto.llm_reranker as reranker_module  # noqa: E402
 
 from evaluation import competitors  # noqa: E402
-from schemaoracle import cache  # noqa: E402
+from schemaoutis import cache  # noqa: E402
 
 CORPUS = "gdc"
 
@@ -55,7 +55,7 @@ def llm(monkeypatch):
         return reply(json.dumps([{"column": best, "score": 0.9}]))
 
     monkeypatch.setattr(reranker_module, "completion", fake)
-    monkeypatch.setattr("schemaoracle.llm.load_env", lambda *a, **k: [])
+    monkeypatch.setattr("schemaoutis.llm.load_env", lambda *a, **k: [])
     return sent
 
 
@@ -80,7 +80,7 @@ def test_a_second_run_sends_nothing(pair, runs, tmp_path, llm):
 
 def test_an_api_error_keeps_the_finished_columns(pair, runs, tmp_path,
                                                  monkeypatch):
-    monkeypatch.setattr("schemaoracle.llm.load_env", lambda *a, **k: [])
+    monkeypatch.setattr("schemaoutis.llm.load_env", lambda *a, **k: [])
     calls = []
 
     def fails_second(**kw):
